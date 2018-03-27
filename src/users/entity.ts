@@ -20,7 +20,8 @@ export default class User extends BaseEntity {
   // @IsString()
   // @MinLength(2)
   // @Column('text')
-  // lastName: string
+  // lastName: string]
+  @IsString()
   @IsEmail()
   @Column('text')
   email: string
