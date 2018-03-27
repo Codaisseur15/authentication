@@ -17,7 +17,7 @@ import { Server } from "http";
 const port = process.env.PORT || 4008;
 
 const app = createKoaServer({
-  //cors: true,
+  cors: true,
   controllers: [LoginController, UserController],
 
   authorizationChecker: async (action: Action, roles: string[]) => {
