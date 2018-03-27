@@ -23,6 +23,7 @@ export default class User extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   password: string
 
+  @IsString()
   @Column('text', {default: 'teacher'})
   role: Role
 
@@ -34,5 +35,4 @@ export default class User extends BaseEntity {
   checkPassword(rawPassword: string): Promise<boolean> {
     return bcrypt.compare(rawPassword, this.password)
   }
-
 }

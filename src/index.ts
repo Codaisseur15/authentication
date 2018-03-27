@@ -30,6 +30,7 @@ const app = createKoaServer({
 
     return false;
   },
+
   currentUserChecker: async (action: Action) => {
     const header: string = action.request.headers.authorization;
     if (header && header.startsWith("Bearer ")) {
@@ -70,4 +71,3 @@ setupDb()
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch(err => console.error(err));
- 
