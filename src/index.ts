@@ -17,7 +17,7 @@ import { Server } from "http";
 const port = process.env.PORT || 4008;
 
 const app = createKoaServer({
-  cors: true,
+  //cors: true,
   controllers: [LoginController, UserController],
 
   authorizationChecker: async (action: Action, roles: string[]) => {
@@ -36,6 +36,7 @@ const app = createKoaServer({
 
     return false;
   },
+
   currentUserChecker: async (action: Action) => {
     const header: string = action.request.headers.authorization;
     if (header && header.startsWith("Bearer ")) {
@@ -89,3 +90,18 @@ setupDb()
   //     }
   //   }
   //
+
+//   currentUserChecker: async (action: Action) => {
+//     const header: string = action.request.headers.authorization;
+//     if (header && header.startsWith("Bearer ")) {
+//       const [, token] = header.split(" ");
+//
+//       if (token) {
+//         const { id } = verify(token);
+//
+//         return User.findOneById(id);
+//       }
+//     }
+//     return undefined;
+//   }
+// })
