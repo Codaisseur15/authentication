@@ -9,6 +9,7 @@ class AuthenticatePayload {
 
   @IsString()
   password: string
+
 }
 
 @JsonController()
@@ -23,7 +24,7 @@ export default class LoginController {
 
     if (!await user.checkPassword(password)) throw new BadRequestError('The password is not correct')
 
-    const jwt = sign({ id: user.id! })
+    const jwt = sign({ id: user.id!, role: user.role! })
     return { jwt }
   }
 }

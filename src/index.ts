@@ -1,94 +1,91 @@
-import 'reflect-metadata'
-import {createKoaServer} from "routing-controllers"
-import setupDb from './db'
-// import { Action, BadRequestError, useKoaServer } from 'routing-controllers'
-// import setupDb from './db'
-// import UserController from './users/controller'
-// import LoginController from './logins/controller'
-// import GameController from './games/controller'
-// import { verify } from './jwt'
-// import User from './users/entity'
-// import * as Koa from 'koa'
-// import {Server} from 'http'
-// import * as IO from 'socket.io'
-// import * as socketIoJwtAuth from 'socketio-jwt-auth'
-// import {secret} from './jwt'
+import "reflect-metadata";
+import { createKoaServer } from "routing-controllers";
+import { Action } from "routing-controllers";
+import setupDb from "./db";
+import LoginController from "./login/controller";
+import { verify } from "./jwt";
+import * as IO from "socket.io";
+import * as socketIoJwtAuth from "socketio-jwt-auth";
+import { secret } from "./jwt";
+import "reflect-metadata";
+import UserController from "./users/controller";
+import User from "./users/entity";
+import { Server } from "http";
+// import "reflect-metadata";
+//import * as Koa from 'koa'
 
-const port = process.env.PORT || 4008
+const port = process.env.PORT || 4008;
 
 const app = createKoaServer({
-  controllers: [
-    //..
-  ]
-})
+  //cors: true,
+  controllers: [LoginController, UserController],
 
-setupDb()
-  .then(_ => {
-    app.listen(port, () => console.log(`Listening on port ${port}`))
-  })
-  .catch(err => console.error(err))
+  authorizationChecker: async (action: Action, roles: string[]) => {
+    // here you can use request/response objects from action
+    // also if decorator defines roles it needs to access the action
+    // you can use them to provide granular access check
+    // checker must return either boolean (true or false)
+    // either promise that resolves a boolean value
+    // demo code:
+    const token = action.request.headers["authorization"];
 
-  import 'reflect-metadata'
+    const user = await User.findOneById(User, token);
+    if (user && !roles.length) return true;
+    if (user && roles.find(role => user.role.indexOf(role) !== -1))
+      return true;
 
-const app = new Koa()
-const server = new Server(app.callback())
-export const io = IO(server)
-const port = process.env.PORT || 4000
-
-useKoaServer(app, {
-  cors: true,
-  controllers: [
-    UserController,
-    LoginController,
-    GameController
-  ],
-  authorizationChecker: (action: Action) => {
-    const header: string = action.request.headers.authorization
-    if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
-
-      try {
-        return !!(token && verify(token))
-      }
-      catch (e) {
-        throw new BadRequestError(e)
-      }
-    }
-
-    return false
+    return false;
   },
   currentUserChecker: async (action: Action) => {
-    const header: string = action.request.headers.authorization
-    if (header && header.startsWith('Bearer ')) {
-      const [ , token ] = header.split(' ')
+    const header: string = action.request.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ");
 
       if (token) {
-        const {id} = verify(token)
-        return User.findOneById(id)
+        const { id } = verify(token);
+
+        return User.findOneById(id);
       }
     }
-    return undefined
+    return undefined;
   }
 })
 
-io.use(socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
-  const user = await User.findOneById(payload.id)
-  if (user) done(null, user)
-  else done(null, false, `Invalid JWT user ID`)
-}))
+const server = new Server(app.callback())
+export const io = IO(server)
 
-io.on('connect', socket => {
-  const name = socket.request.user.firstName
-  console.log(`User ${name} just connected`)
-
-  socket.on('disconnect', () => {
-    console.log(`User ${name} just disconnected`)
+io.use(
+  socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
+    const user = await User.findOneById(payload.id);
+    if (user) done(null, user);
+    else done(null, false, `Invalid JWT user ID`);
   })
-})
+);
+
+io.on("connect", socket => {
+  const name = socket.request.user.firstName;
+  console.log(`User ${name} just connected`);
+
+  socket.on("disconnect", () => {
+    console.log(`User ${name} just disconnected`);
+  });
+});
 
 setupDb()
   .then(_ => {
-    server.listen(port)
-    console.log(`Listening on port ${port}`)
+    app.listen(port, () => console.log(`Listening on port ${port}`));
   })
-  .catch(err => console.error(err))
+  .catch(err => console.error(err));
+  // authorizationChecker: (action: Action) => {
+  //   const header: string = action.request.headers.authorization
+  //   if (header && header.startsWith('Bearer ')) {
+  //     const [ , token ] = header.split(' ')
+  //
+  //     try {
+  //       return !!(token && verify(token))
+  //     }
+  //     catch (e) {
+  //       throw new BadRequestError(e)
+  //     }
+  //   }
+  //
