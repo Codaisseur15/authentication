@@ -17,16 +17,10 @@ import { Server } from "http";
 const port = process.env.PORT || 4008;
 
 const app = createKoaServer({
-  //cors: true,
+  cors: true,
   controllers: [LoginController, UserController],
 
   authorizationChecker: async (action: Action, roles: string[]) => {
-    // here you can use request/response objects from action
-    // also if decorator defines roles it needs to access the action
-    // you can use them to provide granular access check
-    // checker must return either boolean (true or false)
-    // either promise that resolves a boolean value
-    // demo code:
     const token = action.request.headers["authorization"];
 
     const user = await User.findOneById(User, token);

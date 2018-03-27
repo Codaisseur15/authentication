@@ -12,26 +12,18 @@ export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  // @IsString()
-  // @MinLength(2)
-  // @Column('text')
-  // firstName: string
-  //
-  // @IsString()
-  // @MinLength(2)
-  // @Column('text')
-  // lastName: string
+  @IsString()
   @IsEmail()
   @Column('text')
   email: string
 
-//Note minimum length of password is 8 characters
   @IsString()
   @MinLength(8)
   @Column('text')
   @Exclude({ toPlainOnly: true })
   password: string
 
+  @IsString()
   @Column('text', {default: 'teacher'})
   role: Role
 
@@ -43,5 +35,4 @@ export default class User extends BaseEntity {
   checkPassword(rawPassword: string): Promise<boolean> {
     return bcrypt.compare(rawPassword, this.password)
   }
-
 }
