@@ -12,21 +12,11 @@ export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
-  // @IsString()
-  // @MinLength(2)
-  // @Column('text')
-  // firstName: string
-  //
-  // @IsString()
-  // @MinLength(2)
-  // @Column('text')
-  // lastName: string]
   @IsString()
   @IsEmail()
   @Column('text')
   email: string
 
-//Note minimum length of password is 8 characters
   @IsString()
   @MinLength(8)
   @Column('text')
