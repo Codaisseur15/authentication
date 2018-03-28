@@ -11,7 +11,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .post(`${webhooksUrl}/targets`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -20,7 +20,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .post(`${webhooksUrl}/events`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -29,7 +29,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .get(`${webhooksUrl}/targets`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -38,7 +38,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .get(`${webhooksUrl}/targets/:id`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -47,7 +47,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .get(`${webhooksUrl}/events`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -56,7 +56,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .get(`${webhooksUrl}/events/sent`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -65,7 +65,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .get(`${webhooksUrl}/events/failed`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -74,7 +74,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role }) {
       request
         .patch(`${webhooksUrl}/targets/:id`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 }
