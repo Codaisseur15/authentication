@@ -14,7 +14,7 @@ import { Server } from "http";
 // import "reflect-metadata";
 //import * as Koa from 'koa'
 
-const port = process.env.PORT || 4008;
+const port = process.env.PORT || 4007;
 
 const app = createKoaServer({
   cors: true,
@@ -32,23 +32,22 @@ const app = createKoaServer({
             throw new BadRequestError(e)
           }
         }
-
         return false
       },
 
-currentUserChecker: async (action: Action) => {
-  const header: string = action.request.headers.authorization;
-  if (header && header.startsWith("Bearer ")) {
-    const [, token] = header.split(" ");
+  currentUserChecker: async (action: Action) => {
+    const header: string = action.request.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ");
 
-    if (token) {
-      const { id } = verify(token);
+      if (token) {
+        const { id   } = verify(token);
 
-      return User.findOneById(id);
+        return User.findOneById(id);
+      }
     }
+    return undefined;
   }
-  return undefined;
-}
 });
 
 const server = new Server(app.callback());
