@@ -3,7 +3,7 @@ import { JsonController, Post, Body } from 'routing-controllers'
 import { sign } from '../jwt'
 import * as request from 'superagent'
 
-const baseUrl = 'http://localhost:3008'
+const usersUrl = process.env.USERS_URL || 'http://localhost:3008'
 
 class AuthenticatePayload {
   @IsString()
@@ -23,7 +23,7 @@ export default class LoginController {
     //body includes email and password
   ) {
     return request
-      .post(`${baseUrl}/users`)
+      .post(`${usersUrl}/users`)
       .send(body)
       .then(function(res) {
         const jwt = sign({ id: res.body.id!, role: res.body.role! })

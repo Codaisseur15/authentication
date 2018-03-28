@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js install superagent
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add koa-proxies
 
 PATH: 
   /home/bianca/.rbenv/plugins/ruby-build/bin:/home/bianca/.rbenv/shims:/home/bianca/.rbenv/bin:/home/bianca/bin:/home/bianca/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/bianca/.yarn/bin
@@ -21,6 +21,7 @@ npm manifest:
     "author": "nsch1 <nick.schooneman1@gmail.com>",
     "license": "MIT",
     "dependencies": {
+      "@types/jsonwebtoken": "^7.2.6",
       "@types/koa": "^2.0.44",
       "@types/koa-bodyparser": "^4.2.0",
       "@types/koa-multer": "^1.0.0",
@@ -31,19 +32,20 @@ npm manifest:
       "koa": "^2.5.0",
       "koa-bodyparser": "^4.2.0",
       "koa-multer": "^1.0.2",
+      "koa-proxy": "^0.9.0",
       "koa-router": "^7.4.0",
       "pg": "^7.4.1",
       "routing-controllers": "^0.7.7",
       "socket.io": "^2.0.4",
       "socketio-jwt-auth": "^0.0.6",
+      "superagent": "^3.8.2",
       "typeorm": "^0.1.16",
       "typescript": "^2.7.2"
     },
     "scripts": {
       "start": "node .",
       "dev": "nodemon --inspect .",
-      "test":
-        "node_modules/.bin/mocha --require ts-node/register src/**/*.spec.ts",
+      "test": "node_modules/.bin/mocha --require ts-node/register src/**/*.spec.ts",
       "watch": "node_modules/.bin/tsc -w",
       "compile": "node_modules/.bin/tsc -p ."
     }
@@ -107,6 +109,12 @@ Lockfile:
   "@types/http-assert@*":
     version "1.2.2"
     resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.2.2.tgz#17dfe5a82184a8898935d96fe2eaedd37d22d9a4"
+  
+  "@types/jsonwebtoken@^7.2.6":
+    version "7.2.6"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-7.2.6.tgz#8d018c21ca5910b5eb3ebcb385656606a215032f"
+    dependencies:
+      "@types/node" "*"
   
   "@types/keygrip@*":
     version "1.0.1"
@@ -430,6 +438,12 @@ Lockfile:
       raw-body "^2.2.0"
       type-is "^1.6.14"
   
+  co-request@^0.2.0:
+    version "0.2.1"
+    resolved "https://registry.yarnpkg.com/co-request/-/co-request-0.2.1.tgz#6428c002ad4229b3eda6725022aeccf273bee3fb"
+    dependencies:
+      request "*"
+  
   co@^4.6.0:
     version "4.6.0"
     resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -458,7 +472,7 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/component-bind/-/component-bind-1.0.0.tgz#00c608ab7dcd93897c0009651b1d3a8e1e73bbd1"
   
-  component-emitter@1.2.1:
+  component-emitter@1.2.1, component-emitter@^1.2.0:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
   
@@ -494,6 +508,10 @@ Lockfile:
   cookie@0.3.1, cookie@^0.3.1:
     version "0.3.1"
     resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
+  
+  cookiejar@^2.1.0:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.1.tgz#41ad57b1b555951ec171412a81942b1e8200d34a"
   
   cookies@~0.7.0:
     version "0.7.1"
@@ -675,7 +693,7 @@ Lockfile:
       signal-exit "^3.0.0"
       strip-eof "^1.0.0"
   
-  extend@~3.0.1:
+  extend@^3.0.0, extend@~3.0.1:
     version "3.0.1"
     resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.1.tgz#a755ea7bc1adfcc5a31ce7e762dbaadc5e636444"
   
@@ -709,13 +727,17 @@ Lockfile:
     version "0.6.1"
     resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   
-  form-data@~2.3.1:
+  form-data@^2.3.1, form-data@~2.3.1:
     version "2.3.2"
     resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.2.tgz#4970498be604c20c005d4f5c23aecd21d6b49099"
     dependencies:
       asynckit "^0.4.0"
       combined-stream "1.0.6"
       mime-types "^2.1.12"
+  
+  formidable@^1.1.1:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.2.1.tgz#70fb7ca0290ee6ff961090415f4b3df3d2082659"
   
   fresh@^0.5.2:
     version "0.5.2"
@@ -867,6 +889,10 @@ Lockfile:
   iconv-lite@0.4.19:
     version "0.4.19"
     resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
+  
+  iconv-lite@^0.2.11:
+    version "0.2.11"
+    resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.2.11.tgz#1ce60a3a57864a292d1321ff4609ca4bb965adc8"
   
   indexof@0.0.1:
     version "0.0.1"
@@ -1061,6 +1087,13 @@ Lockfile:
     dependencies:
       multer "1.3.0"
   
+  koa-proxy@^0.9.0:
+    version "0.9.0"
+    resolved "https://registry.yarnpkg.com/koa-proxy/-/koa-proxy-0.9.0.tgz#4fd13b0f2eea9be097445bf7b7b4398856a22ef6"
+    dependencies:
+      co-request "^0.2.0"
+      iconv-lite "^0.2.11"
+  
   koa-router@^7.4.0:
     version "7.4.0"
     resolved "https://registry.yarnpkg.com/koa-router/-/koa-router-7.4.0.tgz#aee1f7adc02d5cb31d7d67465c9eacc825e8c5e0"
@@ -1168,7 +1201,7 @@ Lockfile:
     dependencies:
       mimic-fn "^1.0.0"
   
-  methods@^1.0.1:
+  methods@^1.0.1, methods@^1.1.1:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
   
@@ -1181,6 +1214,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.18.tgz#6f323f60a83d11146f831ff11fd66e2fe5503bb8"
     dependencies:
       mime-db "~1.33.0"
+  
+  mime@^1.4.1:
+    version "1.6.0"
+    resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   
   mimic-fn@^1.0.0:
     version "1.2.0"
@@ -1501,7 +1538,7 @@ Lockfile:
     version "1.4.1"
     resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   
-  qs@^6.4.0, qs@~6.5.1:
+  qs@^6.4.0, qs@^6.5.1, qs@~6.5.1:
     version "6.5.1"
     resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
   
@@ -1547,7 +1584,7 @@ Lockfile:
       isarray "0.0.1"
       string_decoder "~0.10.x"
   
-  readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.2:
+  readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.2:
     version "2.3.5"
     resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.5.tgz#b4f85003a938cbb6ecbce2a124fb1012bd1a838d"
     dependencies:
@@ -1563,7 +1600,7 @@ Lockfile:
     version "0.1.12"
     resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.12.tgz#311bf0c6b63cd782f228a81abe146a2bfa9c56f2"
   
-  request@^2.81.0:
+  request@*, request@^2.81.0:
     version "2.85.0"
     resolved "https://registry.yarnpkg.com/request/-/request-2.85.0.tgz#5a03615a47c61420b3eb99b7dba204f83603e1fa"
     dependencies:
@@ -1813,6 +1850,21 @@ Lockfile:
   strip-json-comments@~2.0.1:
     version "2.0.1"
     resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
+  
+  superagent@^3.8.2:
+    version "3.8.2"
+    resolved "https://registry.yarnpkg.com/superagent/-/superagent-3.8.2.tgz#e4a11b9d047f7d3efeb3bbe536d9ec0021d16403"
+    dependencies:
+      component-emitter "^1.2.0"
+      cookiejar "^2.1.0"
+      debug "^3.1.0"
+      extend "^3.0.0"
+      form-data "^2.3.1"
+      formidable "^1.1.1"
+      methods "^1.1.1"
+      mime "^1.4.1"
+      qs "^6.5.1"
+      readable-stream "^2.0.5"
   
   supports-color@^2.0.0:
     version "2.0.0"
@@ -2090,10 +2142,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
 
 Trace: 
-  Error: `install` has been replaced with `add` to add new dependencies. Run "yarn add superagent" instead.
-      at new MessageError (/usr/share/yarn/lib/cli.js:186:110)
-      at Object.<anonymous> (/usr/share/yarn/lib/cli.js:21987:13)
-      at Generator.next (<anonymous>)
-      at step (/usr/share/yarn/lib/cli.js:98:30)
-      at /usr/share/yarn/lib/cli.js:109:13
-      at <anonymous>
+  Error: connect ECONNREFUSED 104.16.63.173:443
+      at Object._errnoException (util.js:1022:11)
+      at _exceptionWithHostPort (util.js:1044:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1182:14)

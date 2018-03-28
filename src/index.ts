@@ -11,32 +11,28 @@ import "reflect-metadata";
 import UserController from "./users/controller";
 import User from "./users/entity";
 import { Server } from "http";
-// import "reflect-metadata";
-//import * as Koa from 'koa'
+import QuizzesController from "./routes/quizzes";
+import * as proxy from "koa-proxies";
 
 const port = process.env.PORT || 4007;
 
-const app = createKoaServer({
+export const app = createKoaServer({
   cors: true,
   controllers: [LoginController, UserController],
-//x_user_id
-//x_user_role
 
+  authorizationChecker: (action: Action) => {
+    const header: string = action.request.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ");
 
-    authorizationChecker: (action: Action) => {
-        const header: string = action.request.headers.authorization
-        if (header && header.startsWith('Bearer ')) {
-          const [ , token ] = header.split(' ')
-
-          try {
-            return !!(token && verify(token))
-          }
-          catch (e) {
-            throw new BadRequestError(e)
-          }
-        }
-        return false
-      },
+      try {
+        return !!(token && verify(token));
+      } catch (e) {
+        throw new BadRequestError(e);
+      }
+    }
+    return false;
+  },
 
   currentUserChecker: async (action: Action) => {
     const header: string = action.request.headers.authorization;
@@ -44,33 +40,13 @@ const app = createKoaServer({
       const [, token] = header.split(" ");
 
       if (token) {
-        const { id   } = verify(token);
+        const { id, role } = verify(token);
 
-        return User.findOneById(id);
+        return { id, role };
       }
     }
     return undefined;
   }
-});
-
-const server = new Server(app.callback());
-export const io = IO(server);
-
-io.use(
-  socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
-    const user = await User.findOneById(payload.id);
-    if (user) done(null, user);
-    else done(null, false, `Invalid JWT user ID`);
-  })
-);
-
-io.on("connect", socket => {
-  const name = socket.request.user.firstName;
-  console.log(`User ${name} just connected`);
-
-  socket.on("disconnect", () => {
-    console.log(`User ${name} just disconnected`);
-  });
 });
 
 setupDb()
