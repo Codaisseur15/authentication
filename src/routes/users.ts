@@ -8,7 +8,6 @@ import {
   Put
 } from "routing-controllers";
 import * as request from "superagent";
-import User from "../users/entity";
 
 const usersUrl = process.env.USERS_URL || "http://localhost:3008";
 
@@ -18,7 +17,7 @@ export default class QuizzesController {
   @Post("/users")
   async postUsers(@CurrentUser() user: { id; role }) {
     request
-      .get(`${usersUrl}/users`)
+      .post(`${usersUrl}/users`)
       .set({ "x-user-id": user.id, "x-user-role": user.role })
       .catch(err => alert(err));
   }
@@ -45,7 +44,7 @@ export default class QuizzesController {
   @Put("/users/:id")
   async putUsersId(@CurrentUser() user: { id; role }) {
     request
-      .get(`${usersUrl}/users/:id`)
+      .put(`${usersUrl}/users/:id`)
       .set({ "x-user-id": user.id, "x-user-role": user.role })
       .catch(err => alert(err));
   }
@@ -54,7 +53,7 @@ export default class QuizzesController {
   @Patch("/users/:id")
   async patchUsersId(@CurrentUser() user: { id; role }) {
     request
-      .get(`${usersUrl}/users/:id`)
+      .patch(`${usersUrl}/users/:id`)
       .set({ "x-user-id": user.id, "x-user-role": user.role })
       .catch(err => alert(err));
   }
@@ -62,7 +61,7 @@ export default class QuizzesController {
   @Delete("/users/:id")
   async deleteUsersId(@CurrentUser() user: { id; role }) {
     request
-      .get(`${usersUrl}/users/:id`)
+      .delete(`${usersUrl}/users/:id`)
       .set({ "x-user-id": user.id, "x-user-role": user.role })
       .catch(err => alert(err));
   }

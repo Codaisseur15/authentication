@@ -4,15 +4,9 @@ import { Action, BadRequestError } from "routing-controllers";
 import setupDb from "./db";
 import LoginController from "./login/controller";
 import { verify } from "./jwt";
-import * as IO from "socket.io";
-import * as socketIoJwtAuth from "socketio-jwt-auth";
-import { secret } from "./jwt";
 import "reflect-metadata";
 import UserController from "./users/controller";
-import User from "./users/entity";
-import { Server } from "http";
-import QuizzesController from "./routes/quizzes";
-import * as proxy from "koa-proxies";
+//import { secret } from "./jwt";
 
 const port = process.env.PORT || 4007;
 
