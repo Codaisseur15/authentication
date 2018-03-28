@@ -12,7 +12,7 @@ import * as request from "superagent";
 const usersUrl = process.env.USERS_URL || "http://localhost:3008";
 
 @JsonController()
-export default class QuizzesController {
+export default class UsersController {
   //post:/users
   @Post("/users")
   async postUsers(@CurrentUser() user: { id; role }) {
