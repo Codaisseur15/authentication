@@ -19,15 +19,7 @@ export default class User extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   password: string
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  // @IsString()
-=======
-  @IsString()
->>>>>>> 063434f8a88e0587a359a0d9a211308fa47b7030
-=======
   //@IsString()
->>>>>>> 6a57e54b4fbbcf3932fd506d7fdd44fa4abc6e09
   @Column('text', {default: 'teacher'})
   role: string
 

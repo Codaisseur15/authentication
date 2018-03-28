@@ -1,7 +1,9 @@
 import { IsString } from 'class-validator'
-import { JsonController, Post, Body, BadRequestError } from 'routing-controllers'
+import { JsonController, Post, Body } from 'routing-controllers'
 import { sign } from '../jwt'
-import User from '../users/entity'
+import * as request from 'superagent'
+
+const baseUrl = 'http://localhost:3008'
 
 class AuthenticatePayload {
   @IsString()
@@ -17,14 +19,16 @@ export default class LoginController {
 
   @Post('/logins')
   async authenticate(
-    @Body() { email, password }: AuthenticatePayload
+    @Body() body: AuthenticatePayload
+    //body includes email and password
   ) {
-    const user = await User.findOne({ where: { email } })
-    if (!user) throw new BadRequestError('A user with this email does not exist')
-
-    if (!await user.checkPassword(password)) throw new BadRequestError('The password is not correct')
-
-    const jwt = sign({ id: user.id!, role: user.role! })
-    return { jwt }
-  }
+    return request
+      .post(`${baseUrl}/users`)
+      .send(body)
+      .then(function(res) {
+        const jwt = sign({ id: res.body.id!, role: res.body.role! })
+        return { jwt }
+      })
+      .catch(err => alert(err))
+    }
 }
