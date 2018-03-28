@@ -8,17 +8,19 @@ import "reflect-metadata";
 import UserController from "./users/controller";
 import WebhookController from "./routes/webhooks"
 import ResponsesController from "./routes/responses"
+import QuizzesController from "./routes/quizzes"
+import UsersController from "./routes/users"
 
 const port = process.env.PORT || 4007;
 
-const app = createKoaServer({
+export const app = createKoaServer({
   cors: true,
-  controllers: [LoginController, UserController, ResponsesController, WebhookController],
+  controllers: [LoginController, UserController, ResponsesController, WebhookController, QuizzesController, UsersController],
 
-    authorizationChecker: (action: Action) => {
-        const header: string = action.request.headers.authorization
-        if (header && header.startsWith('Bearer ')) {
-          const [ , token ] = header.split(' ')
+  authorizationChecker: (action: Action) => {
+    const header: string = action.request.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      const [, token] = header.split(" ");
 
           try {
             return !!(token && verify(token))
