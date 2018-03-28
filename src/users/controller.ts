@@ -15,7 +15,7 @@ export default class UserController {
       return entity.save()
     }
 
-  // @Authorized()
+  @Authorized()
   @Get('/users/:id([0-9]+)')
   getUser(
     @Param('id') id: number,
@@ -24,7 +24,7 @@ export default class UserController {
     return User.findOneById(id)
   }
 
-  // @Authorized()
+  @Authorized()
   @Get('/users')
   allUsers() {
     return User.find()

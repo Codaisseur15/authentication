@@ -29,20 +29,21 @@ const app = createKoaServer({
       return true;
 
     return false;
-  },
-  currentUserChecker: async (action: Action) => {
-    const header: string = action.request.headers.authorization;
-    if (header && header.startsWith("Bearer ")) {
-      const [, token] = header.split(" ");
-
-      if (token) {
-        const { id } = verify(token);
-
-        return User.findOneById(id);
-      }
-    }
-    return undefined;
   }
+
+  // currentUserChecker: async (action: Action) => {
+  //   const header: string = action.request.headers.authorization;
+  //   if (header && header.startsWith("Bearer ")) {
+  //     const [, token] = header.split(" ");
+  //
+  //     if (token) {
+  //       const { id } = verify(token);
+  //
+  //       return User.findOneById(id);
+  //     }
+  //   }
+  //   return undefined;
+  // }
 })
 
 const server = new Server(app.callback())
@@ -70,4 +71,3 @@ setupDb()
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch(err => console.error(err));
- 
