@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { createKoaServer } from "routing-controllers";
-import { Action } from "routing-controllers";
+import { Action, BadRequestError } from "routing-controllers";
 import setupDb from "./db";
 import LoginController from "./login/controller";
 import { verify } from "./jwt";
@@ -20,34 +20,39 @@ const app = createKoaServer({
   cors: true,
   controllers: [LoginController, UserController],
 
-  authorizationChecker: async (action: Action, roles: string[]) => {
-    const token = action.request.headers["authorization"];
+    authorizationChecker: (action: Action) => {
+        const header: string = action.request.headers.authorization
+        if (header && header.startsWith('Bearer ')) {
+          const [ , token ] = header.split(' ')
 
-    const user = await User.findOneById(User, token);
-    if (user && !roles.length) return true;
-    if (user && roles.find(role => user.role.indexOf(role) !== -1))
-      return true;
+          try {
+            return !!(token && verify(token))
+          }
+          catch (e) {
+            throw new BadRequestError(e)
+          }
+        }
 
-    return false;
-  },
+        return false
+      },
 
-  currentUserChecker: async (action: Action) => {
-    const header: string = action.request.headers.authorization;
-    if (header && header.startsWith("Bearer ")) {
-      const [, token] = header.split(" ");
+currentUserChecker: async (action: Action) => {
+  const header: string = action.request.headers.authorization;
+  if (header && header.startsWith("Bearer ")) {
+    const [, token] = header.split(" ");
 
-      if (token) {
-        const { id } = verify(token);
+    if (token) {
+      const { id } = verify(token);
 
-        return User.findOneById(id);
-      }
+      return User.findOneById(id);
     }
-    return undefined;
   }
-})
+  return undefined;
+}
+});
 
-const server = new Server(app.callback())
-export const io = IO(server)
+const server = new Server(app.callback());
+export const io = IO(server);
 
 io.use(
   socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
