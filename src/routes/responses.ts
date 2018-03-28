@@ -20,7 +20,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .get(`${responsesUrl}/responses`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -29,7 +29,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .get(`${responsesUrl}/responses/:id`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -38,7 +38,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .get(`${responsesUrl}/responses/quiz/:quizId`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -47,7 +47,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .get(`${responsesUrl}/results/quiz=:quizId/course=:courseId`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -56,7 +56,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .get(`${responsesUrl}/results/quiz/:quizId`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
     }
 
@@ -65,7 +65,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .delete(`${responsesUrl}/responses/:id`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
   }
 
@@ -74,7 +74,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .delete(`${responsesUrl}/responses/quizzes/:quizId`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
   }
 
@@ -83,7 +83,7 @@ const responsesUrl = process.env.RESPONSES_URL || 'http://localhost:4001'
     @CurrentUser() user: { id, role }) {
       request
         .delete(`${responsesUrl}/responses/courses/:courseId`)
-        .set({'X_USER_ID': user.id, 'X_USER_ROLE': user.role})
+        .set({'x-user-id': user.id, 'x-user-role': user.role})
         .catch(err => alert(err))
   }
 }
