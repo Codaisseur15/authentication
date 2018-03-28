@@ -14,11 +14,14 @@ import { Server } from "http";
 // import "reflect-metadata";
 //import * as Koa from 'koa'
 
-const port = process.env.PORT || 4008;
+const port = process.env.PORT || 4007;
 
 const app = createKoaServer({
   cors: true,
   controllers: [LoginController, UserController],
+//x_user_id
+//x_user_role
+
 
     authorizationChecker: (action: Action) => {
         const header: string = action.request.headers.authorization
