@@ -4,21 +4,16 @@ import { Action, BadRequestError } from "routing-controllers";
 import setupDb from "./db";
 import LoginController from "./login/controller";
 import { verify } from "./jwt";
-import * as IO from "socket.io";
-import * as socketIoJwtAuth from "socketio-jwt-auth";
-import { secret } from "./jwt";
 import "reflect-metadata";
 import UserController from "./users/controller";
-import User from "./users/entity";
-import { Server } from "http";
-// import "reflect-metadata";
-//import * as Koa from 'koa'
+import WebhookController from "./routes/webhooks"
+import ResponsesController from "./routes/responses"
 
 const port = process.env.PORT || 4007;
 
 const app = createKoaServer({
   cors: true,
-  controllers: [LoginController, UserController],
+  controllers: [LoginController, UserController, ResponsesController, WebhookController],
 
     authorizationChecker: (action: Action) => {
         const header: string = action.request.headers.authorization
@@ -33,41 +28,21 @@ const app = createKoaServer({
           }
         }
         return false
-      },
+    },
 
-  currentUserChecker: async (action: Action) => {
-    const header: string = action.request.headers.authorization;
-    if (header && header.startsWith("Bearer ")) {
-      const [, token] = header.split(" ");
+    currentUserChecker: async (action: Action) => {
+      const header: string = action.request.headers.authorization;
+      if (header && header.startsWith("Bearer ")) {
+        const [, token] = header.split(" ");
 
-      if (token) {
-        const { id   } = verify(token);
+        if (token) {
+          const { id, role } = verify(token);
 
-        return User.findOneById(id);
+          return { id, role };
+        }
       }
+      return undefined;
     }
-    return undefined;
-  }
-});
-
-const server = new Server(app.callback());
-export const io = IO(server);
-
-io.use(
-  socketIoJwtAuth.authenticate({ secret }, async (payload, done) => {
-    const user = await User.findOneById(payload.id);
-    if (user) done(null, user);
-    else done(null, false, `Invalid JWT user ID`);
-  })
-);
-
-io.on("connect", socket => {
-  const name = socket.request.user.firstName;
-  console.log(`User ${name} just connected`);
-
-  socket.on("disconnect", () => {
-    console.log(`User ${name} just disconnected`);
-  });
 });
 
 setupDb()
