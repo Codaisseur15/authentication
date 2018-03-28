@@ -76,13 +76,3 @@ setupDb()
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch(err => console.error(err));
-
-  //  authorizationChecker: async (action: Action, roles: string[]) => {
-  //     const token = action.request.headers["authorization"];
-  //
-  //     const user = await User.findOneById(User, token);
-  //     if (user && !roles.length) return true;
-  //     if (user && roles.find(role => user.role.indexOf(role) !== -1)) return true;
-  //
-  //     return false;
-  // },
