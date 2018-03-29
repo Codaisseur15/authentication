@@ -29,6 +29,8 @@ export default class LoginController {
         const jwt = sign({ id: res.body.id!, role: res.body.role! })
         return { jwt }
       })
-      .catch(err => alert(err))
+      .catch(err => {
+        return {message: err.message}
+      })
     }
 }

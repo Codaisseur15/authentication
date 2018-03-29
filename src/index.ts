@@ -43,7 +43,7 @@ export const app = createKoaServer({
           return { id, role };
         }
       }
-      return undefined;
+      return {};
     }
 });
 
