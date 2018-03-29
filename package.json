@@ -24,8 +24,7 @@
     "socket.io": "^2.0.4",
     "socketio-jwt-auth": "^0.0.6",
     "superagent": "^3.8.2",
-    "tsc": "^1.20150623.0",
-    "typeorm": "^0.1.16"
+    "tsc": "^1.20150623.0"
   },
   "scripts": {
     "start": "node .",
