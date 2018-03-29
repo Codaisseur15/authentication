@@ -38,11 +38,14 @@ export default class WebhookController {
 
   @Get('/targets')
   async getTargets(
-    @CurrentUser() user: { id, role }
+    @CurrentUser() user: { id, role },
+    @Body() body: object
   ) {
       return request
         .get(`${webhooksUrl}/targets`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
         .catch(err => {
           return { message: err.message }
         })
@@ -50,11 +53,14 @@ export default class WebhookController {
 
   @Get('/targets/:id')
   async getTarget(
-    @CurrentUser() user: { id, role }
+    @CurrentUser() user: { id, role },
+    @Body() body: object
   ) {
       return request
         .get(`${webhooksUrl}/targets/:id`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
         .catch(err => {
           return { message: err.message }
         })
@@ -62,11 +68,14 @@ export default class WebhookController {
 
   @Get('/events')
   async getEvent(
-    @CurrentUser() user: { id, role }
+    @CurrentUser() user: { id, role },
+    @Body() body: object
   ) {
       return request
         .get(`${webhooksUrl}/events`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
         .catch(err => {
           return { message: err.message }
         })
@@ -74,11 +83,14 @@ export default class WebhookController {
 
   @Get('/events/sent')
   async getSentEvents(
-    @CurrentUser() user: { id, role }
+    @CurrentUser() user: { id, role },
+    @Body() body: object
   ) {
       return request
         .get(`${webhooksUrl}/events/sent`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
         .catch(err => {
           return { message: err.message }
         })
@@ -86,11 +98,14 @@ export default class WebhookController {
 
   @Get('/events/failed')
   async getFailedEvents(
-    @CurrentUser() user: { id, role }
+    @CurrentUser() user: { id, role },
+    @Body() body: object
   ) {
       return request
         .get(`${webhooksUrl}/events/failed`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
         .catch(err => {
           return { message: err.message }
         })
