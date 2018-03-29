@@ -26,7 +26,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role },
     @Body() body: object
   ) {
-      request
+      return request
         .post(`${webhooksUrl}/events`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .send(body)
@@ -40,7 +40,7 @@ export default class WebhookController {
   async getTargets(
     @CurrentUser() user: { id, role }
   ) {
-      request
+      return request
         .get(`${webhooksUrl}/targets`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .catch(err => {
@@ -52,7 +52,7 @@ export default class WebhookController {
   async getTarget(
     @CurrentUser() user: { id, role }
   ) {
-      request
+      return request
         .get(`${webhooksUrl}/targets/:id`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .catch(err => {
@@ -64,7 +64,7 @@ export default class WebhookController {
   async getEvent(
     @CurrentUser() user: { id, role }
   ) {
-      request
+      return request
         .get(`${webhooksUrl}/events`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .catch(err => {
@@ -76,7 +76,7 @@ export default class WebhookController {
   async getSentEvents(
     @CurrentUser() user: { id, role }
   ) {
-      request
+      return request
         .get(`${webhooksUrl}/events/sent`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .catch(err => {
@@ -88,7 +88,7 @@ export default class WebhookController {
   async getFailedEvents(
     @CurrentUser() user: { id, role }
   ) {
-      request
+      return request
         .get(`${webhooksUrl}/events/failed`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .catch(err => {
@@ -101,7 +101,7 @@ export default class WebhookController {
     @CurrentUser() user: { id, role },
     @Body() body: object
   ) {
-      request
+      return request
         .patch(`${webhooksUrl}/targets/:id`)
         .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
         .send(body)
