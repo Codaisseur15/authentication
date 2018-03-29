@@ -5,7 +5,8 @@ import {
   CurrentUser,
   Patch,
   Delete,
-  Put
+  Put,
+  Body,
 } from "routing-controllers";
 import * as request from "superagent";
 
@@ -13,49 +14,61 @@ const usersUrl = process.env.USERS_URL || "http://localhost:3008";
 
 @JsonController()
 export default class UsersController {
-  //post:/users
-  @Post("/users")
-  async postUsers(@CurrentUser() user: { id; role }) {
-    request
-      .post(`${usersUrl}/users`)
-      .set({ "x-user-id": user.id, "x-user-role": user.role })
-      .catch(err => alert(err));
-  }
 
-  //get:/users/:id
+  @Post("/users")
+  async postUsers(@CurrentUser() user: { id; role }, @Body() body: object) {
+    return request
+      .post(`${usersUrl}/users`)
+      .set({ "x-user-id": user.id || null, "x-user-role": user.role || null })
+      .send(body)
+      .then(res => res.body)
+      .catch(err => {
+        return { message: err.message };
+      });
+      }
+
   @Get("/users/:id")
   async getUsersId(@CurrentUser() user: { id; role }) {
-    request
+    return request
       .get(`${usersUrl}/users/:id`)
-      .set({ "x-user-id": user.id, "x-user-role": user.role })
-      .catch(err => alert(err));
+      .set({ "x-user-id": user.id || null, "x-user-role": user.role || null })
+      .catch(err => {
+        return { message: err.message };
+      });
   }
 
-  //get:/users
   @Get("/users")
   async getUsers(@CurrentUser() user: { id; role }) {
-    request
+    return request
       .get(`${usersUrl}/users`)
-      .set({ "x-user-id": user.id, "x-user-role": user.role })
-      .catch(err => alert(err));
+      .set({ "x-user-id": user.id || null, "x-user-role": user.role || null })
+      .catch(err => {
+        return { message: err.message };
+      });
   }
 
-  //put:/users/:id
   @Put("/users/:id")
-  async putUsersId(@CurrentUser() user: { id; role }) {
-    request
+  async putUsers(@CurrentUser() user: { id; role }, @Body() body: object) {
+    return request
       .put(`${usersUrl}/users/:id`)
-      .set({ "x-user-id": user.id, "x-user-role": user.role })
-      .catch(err => alert(err));
+      .set({ "x-user-id": user.id || null, "x-user-role": user.role || null })
+      .send(body)
+      .then(res => res.body)
+      .catch(err => {
+        return { message: err.message };
+      });
   }
 
-  //patch:/users/:id
   @Patch("/users/:id")
-  async patchUsersId(@CurrentUser() user: { id; role }) {
-    request
+  async patchUsers(@CurrentUser() user: { id; role }, @Body() body: object) {
+    return request
       .patch(`${usersUrl}/users/:id`)
-      .set({ "x-user-id": user.id, "x-user-role": user.role })
-      .catch(err => alert(err));
+      .set({ "x-user-id": user.id || null, "x-user-role": user.role || null })
+      .send(body)
+      .then(res => res.body)
+      .catch(err => {
+        return { message: err.message };
+      });
   }
 
   @Delete("/users/:id")
