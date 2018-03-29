@@ -33,7 +33,7 @@
     "test": "jest --watch --notify",
     "test:ci": "jest --ci",
     "watch": "tsc -w",
-    "compile": "tsc -p ."
+    "compile": "tsc -p .",
     "typeorm": "^0.1.16",
     "typescript": "^2.8.1"
   },
