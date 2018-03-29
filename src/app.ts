@@ -4,13 +4,12 @@ import { Action, BadRequestError } from "routing-controllers";
 import LoginController from "./login/controller";
 import { verify } from "./jwt";
 import "reflect-metadata";
-import UserController from "./users/controller";
 import WebhookController from "./routes/webhooks"
 import ResponsesController from "./routes/responses"
 
 export const app = createKoaServer({
   cors: true,
-  controllers: [LoginController, UserController, ResponsesController, WebhookController],
+  controllers: [LoginController, ResponsesController, WebhookController],
 
     authorizationChecker: (action: Action) => {
         const header: string = action.request.headers.authorization
