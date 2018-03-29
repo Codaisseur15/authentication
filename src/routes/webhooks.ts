@@ -1,18 +1,24 @@
-import { JsonController, Post, Get, CurrentUser, Patch } from 'routing-controllers'
+import { JsonController, Post, Get, CurrentUser, Patch, Body } from 'routing-controllers'
 import * as request from 'superagent'
 
-const webhooksUrl = process.env.WEBHOOKS_URL || 'http://localhost:4002'
+const webhooksUrl = process.env.WEBHOOKS_URL || 'http://localhost:4008'
 
 @JsonController()
 export default class WebhookController {
 
   @Post('/targets')
   async postTargets(
-    @CurrentUser() user: { id, role }) {
-      request
+    @CurrentUser() user : { id, role },
+    @Body() body: object
+  ) {
+      return request
         .post(`${webhooksUrl}/targets`)
-        .set({'x-user-id': user.id, 'x-user-role': user.role})
-        .catch(err => alert(err))
+        .set({'x-user-id': user.id || null, 'x-user-role': user.role || null})
+        .send(body)
+        .then(res => res.body)
+        .catch(err => {
+          return { message: err.message }
+        })
     }
 
   @Post('/events')
