@@ -24,6 +24,7 @@ export default class LoginController {
   ) {
     return request
       .post(`${usersUrl}/users`)
+
       .send(body)
       .then(function(res) {
         const jwt = sign({ id: res.body.id!, role: res.body.role! })
